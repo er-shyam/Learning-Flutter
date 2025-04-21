@@ -1,0 +1,9 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"flutter-shyam-notes",
+"appId":"1:1046058612380:android:5f6ef4469037dc78075f59",
+"fileOutput":"android/app/google-services.json"}},
+"dart":{"lib/firebase_options.dart":{"projectId":"flutter-shyam-notes",
+"configurations":{"android":"1:1046058612380:android:5f6ef4469037dc78075f59",
+"ios":"1:1046058612380:ios:c57c42012fe1e50c075f59",
+"macos":"1:1046058612380:ios:c57c42012fe1e50c075f59",
+"web":"1:1046058612380:web:9431b9827a9b11c1075f59",
+"windows":"1:1046058612380:web:7fb3ffefaa31a636075f59"}}}}}}

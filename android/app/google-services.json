@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1046058612380",
+    "project_id": "flutter-shyam-notes",
+    "storage_bucket": "flutter-shyam-notes.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046058612380:android:5f6ef4469037dc78075f59",
+        "android_client_info": {
+          "package_name": "com.example.flutter_notes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9_MzYF55jkKovh1hWo0K8ZkQfd6f2Flc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
