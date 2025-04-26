@@ -63,12 +63,19 @@ class _LoginViewState extends State<LoginView> {
                     onPressed: () async {
                       final email = _emailController.text;
                       final password = _passwordController.text;
-                      final userCredential = FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                            email: email,
-                            password: password,
-                          );
-                      print(userCredential);
+                      try{
+                        final userCredential = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                          email: email,
+                          password: password,
+                        );
+                        print(userCredential);
+                      } on FirebaseAuthException catch(e){
+                        if(e.code=='user-not-found'){
+                          print('user not found');
+                        }else if(e.code=='invalid-credential')
+                          print('wrong password');
+                      }
                     },
                     child: Text("Login"),
                   ),

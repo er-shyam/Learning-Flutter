@@ -78,12 +78,22 @@ class _RegisterViewState extends State<RegisterView> {
                     onPressed: () async {
                       final email = _emailController.text;
                       final password = _passwordController.text;
-                      final userCredential = FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                            email: email,
-                            password: password,
-                          );
-                      print(userCredential);
+                      try{
+                        final userCredential = FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                          email: email,
+                          password: password,
+                        );
+                        print(userCredential);
+                      }on FirebaseAuthException catch(e){
+                        if(e.code==''){
+                          print('weak password');
+                        }else if(e.code=='email-already-in-use'){
+                          print("Email is already in use by shyam");
+                        }else if(e.code == 'invalid-email'){
+                          print('Email is invalid');
+                        }
+                      }
                     },
                     child: Text("Register"),
                   ),
