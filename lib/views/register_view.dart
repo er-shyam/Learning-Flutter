@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_notes/firebase_options.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -30,65 +28,46 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Register")),
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
+    return Column(
+      children: [
+        TextField(
+          controller: _emailController,
+          autocorrect: false,
+          enableSuggestions: false,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(hintText: 'Enter your Email here'),
         ),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Column(
-                children: [
-                  TextField(
-                    controller: _emailController,
-                    autocorrect: false,
-                    enableSuggestions: false,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your Email here',
-                    ),
-                  ),
-                  TextField(
-                    controller: _passwordController,
-                    autocorrect: false,
-                    enableSuggestions: false,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your Password here',
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      final email = _emailController.text;
-                      final password = _passwordController.text;
-                      try {
-                        final userCredential = FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                              email: email,
-                              password: password,
-                            );
-                        print(userCredential);
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == '') {
-                          print('weak password');
-                        } else if (e.code == 'email-already-in-use') {
-                          print("Email is already in use by shyam");
-                        } else if (e.code == 'invalid-email') {
-                          print('Email is invalid');
-                        }
-                      }
-                    },
-                    child: Text("Register"),
-                  ),
-                ],
-              );
-            default:
-              return const Text('Loading.....');
-          }
-        },
-      ),
+        TextField(
+          controller: _passwordController,
+          autocorrect: false,
+          enableSuggestions: false,
+          obscureText: true,
+          decoration: InputDecoration(hintText: 'Enter your Password here'),
+        ),
+        TextButton(
+          onPressed: () async {
+            final email = _emailController.text;
+            final password = _passwordController.text;
+            try {
+              final userCredential = FirebaseAuth.instance
+                  .createUserWithEmailAndPassword(
+                    email: email,
+                    password: password,
+                  );
+              print(userCredential);
+            } on FirebaseAuthException catch (e) {
+              if (e.code == '') {
+                print('weak password');
+              } else if (e.code == 'email-already-in-use') {
+                print("Email is already in use by shyam");
+              } else if (e.code == 'invalid-email') {
+                print('Email is invalid');
+              }
+            }
+          },
+          child: Text("Register"),
+        ),
+      ],
     );
   }
 }
