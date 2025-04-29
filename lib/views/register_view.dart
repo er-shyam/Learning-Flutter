@@ -28,46 +28,67 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          controller: _emailController,
-          autocorrect: false,
-          enableSuggestions: false,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(hintText: 'Enter your Email here'),
-        ),
-        TextField(
-          controller: _passwordController,
-          autocorrect: false,
-          enableSuggestions: false,
-          obscureText: true,
-          decoration: InputDecoration(hintText: 'Enter your Password here'),
-        ),
-        TextButton(
-          onPressed: () async {
-            final email = _emailController.text;
-            final password = _passwordController.text;
-            try {
-              final userCredential = FirebaseAuth.instance
-                  .createUserWithEmailAndPassword(
-                    email: email,
-                    password: password,
-                  );
-              print(userCredential);
-            } on FirebaseAuthException catch (e) {
-              if (e.code == '') {
-                print('weak password');
-              } else if (e.code == 'email-already-in-use') {
-                print("Email is already in use by shyam");
-              } else if (e.code == 'invalid-email') {
-                print('Email is invalid');
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 214, 222, 215),
+
+      appBar: AppBar(
+        title: const Text("Register"),
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      ),
+      body: Column(
+        children: [
+          TextField(
+            controller: _emailController,
+            autocorrect: false,
+            enableSuggestions: false,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(hintText: 'Enter your Email here'),
+          ),
+          TextField(
+            controller: _passwordController,
+            autocorrect: false,
+            enableSuggestions: false,
+            obscureText: true,
+            decoration: InputDecoration(hintText: 'Enter your Password here'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final email = _emailController.text;
+              final password = _passwordController.text;
+              try {
+                final userCredential = FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                      email: email,
+                      password: password,
+                    );
+                print(userCredential);
+              } on FirebaseAuthException catch (e) {
+                if (e.code == '') {
+                  print('weak password');
+                } else if (e.code == 'email-already-in-use') {
+                  print("Email is already in use by shyam");
+                } else if (e.code == 'invalid-email') {
+                  print('Email is invalid');
+                }
               }
-            }
-          },
-          child: Text("Register"),
-        ),
-      ],
+            },
+            child: Text("Register"),
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/login/', (context) => false);
+            },
+            child: const Text("Already a user? Login here"),
+          ),
+        ],
+      ),
     );
   }
 }
