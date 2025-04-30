@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -61,19 +62,20 @@ class _LoginViewState extends State<LoginView> {
                       email: email,
                       password: password,
                     );
-                print(userCredential);
+                devtools.log(userCredential.toString());
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
-                  print('user not found');
+                  devtools.log('user not found');
                 } else if (e.code == 'invalid-credential')
-                  print('wrong password');
+                  // ignore: curly_braces_in_flow_control_structures
+                  devtools.log('wrong password');
               }
             },
-            child: Text("Login"),
             style: TextButton.styleFrom(
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
             ),
+            child: Text("Login"),
           ),
           TextButton(
             onPressed: () {
