@@ -21,11 +21,11 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               final user = FirebaseAuth.instance.currentUser;
               await user?.sendEmailVerification();
             },
-            child: Text("Send Email Verification"),
             style: TextButton.styleFrom(
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
             ),
+            child: Text("Send Email Verification"),
           ),
         ],
       ),
