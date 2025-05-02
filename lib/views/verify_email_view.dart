@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_notes/constants/routes.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -12,10 +13,21 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Verify YOur Email")),
+      backgroundColor: Color.fromARGB(255, 214, 222, 215),
+      appBar: AppBar(
+        title: Text("Verify YOur Email"),
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      ),
       body: Column(
         children: [
-          Text("Please Verify Your Email Address"),
+          const Text(
+            "We've sent you an email verification. Please open it to verify your account.",
+          ),
+          const Text(
+            "If you haven't received a verification email yet, press the button below.",
+          ),
+          const SizedBox(height: 20),
           TextButton(
             onPressed: () async {
               final user = FirebaseAuth.instance.currentUser;
@@ -26,6 +38,20 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               foregroundColor: Colors.white,
             ),
             child: Text("Send Email Verification"),
+          ),
+          TextButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.of(
+                // ignore: use_build_context_synchronously
+                context,
+              ).pushNamedAndRemoveUntil(registerRoute, (route) => false);
+            },
+            child: Text("Restart"),
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
+            ),
           ),
         ],
       ),
