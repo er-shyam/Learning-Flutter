@@ -47,11 +47,11 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                 context,
               ).pushNamedAndRemoveUntil(registerRoute, (route) => false);
             },
-            child: Text("Restart"),
             style: TextButton.styleFrom(
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
             ),
+            child: Text("Restart"),
           ),
         ],
       ),

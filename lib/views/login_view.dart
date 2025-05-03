@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'dart:developer' as devtools show log;
-
 import 'package:flutter_notes/constants/routes.dart';
 import 'package:flutter_notes/utilities/show_error.dart';
 
@@ -64,12 +63,20 @@ class _LoginViewState extends State<LoginView> {
                   email: email,
                   password: password,
                 );
-                if (!mounted) return;
-                // ignore: use_build_context_synchronously
-                Navigator.of(
-                  // ignore: use_build_context_synchronously
-                  context,
-                ).pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                final user = FirebaseAuth.instance.currentUser;
+                if (user?.emailVerified ?? false) {
+                  //user's email is verified
+                  Navigator.of(
+                    // ignore: use_build_context_synchronously
+                    context,
+                  ).pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                } else {
+                  //user's email is not verified
+                  Navigator.of(
+                    // ignore: use_build_context_synchronously
+                    context,
+                  ).pushNamedAndRemoveUntil(verifyEmailRoute, (route) => false);
+                }
               } on FirebaseAuthException catch (e) {
                 switch (e.code) {
                   case 'user-not-found':
@@ -83,9 +90,6 @@ class _LoginViewState extends State<LoginView> {
                   default:
                     await showErrorDialog(context, "Error: ${e.code}");
                 }
-                if (!mounted) return;
-                // ignore: use_build_context_synchronously
-                await showErrorDialog(context, e.code);
               } catch (e) {
                 // ignore: use_build_context_synchronously
                 await showErrorDialog(context, e.toString());
