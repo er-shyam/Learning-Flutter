@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'dart:developer' as devtools show log;
 import 'package:flutter_notes/constants/routes.dart';
+import 'package:flutter_notes/services/auth/auth.service.dart';
+import 'package:flutter_notes/services/auth/auth_exceptions.dart';
 import 'package:flutter_notes/utilities/show_error.dart';
 
 class LoginView extends StatefulWidget {
@@ -59,12 +60,12 @@ class _LoginViewState extends State<LoginView> {
               final email = _emailController.text;
               final password = _passwordController.text;
               try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                await AuthService.firebase().logIn(
                   email: email,
                   password: password,
                 );
-                final user = FirebaseAuth.instance.currentUser;
-                if (user?.emailVerified ?? false) {
+                final user = AuthService.firebase().currentUser;
+                if (user?.isEmailVerified ?? false) {
                   //user's email is verified
                   Navigator.of(
                     // ignore: use_build_context_synchronously
@@ -77,22 +78,15 @@ class _LoginViewState extends State<LoginView> {
                     context,
                   ).pushNamedAndRemoveUntil(verifyEmailRoute, (route) => false);
                 }
-              } on FirebaseAuthException catch (e) {
-                switch (e.code) {
-                  case 'user-not-found':
-                    // ignore: use_build_context_synchronously
-                    await showErrorDialog(context, "User not find");
-                    break;
-                  case 'wrong-password':
-                    // ignore: use_build_context_synchronously
-                    await showErrorDialog(context, "Wrong password provided");
-                    break;
-                  default:
-                    await showErrorDialog(context, "Error: ${e.code}");
-                }
-              } catch (e) {
+              } on UserNotFoundAuthException {
                 // ignore: use_build_context_synchronously
-                await showErrorDialog(context, e.toString());
+                await showErrorDialog(context, "User not find");
+              } on WrongPasswordAuthException {
+                // ignore: use_build_context_synchronously
+                await showErrorDialog(context, "Wrong password provided");
+              } on GenericAuthException {
+                // ignore: use_build_context_synchronously
+                await showErrorDialog(context, "Authentication Error");
               }
             },
             style: TextButton.styleFrom(
